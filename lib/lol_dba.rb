@@ -19,7 +19,7 @@ EOM
 
   def self.get_through_foreign_key(target_class, reflection_options)
     # has_many :through
-    reflection = target_class.reflections[reflection_options.options[:through].to_s]
+    reflection = target_class.reflections[reflection_options.options[:through]]
 
     # has_and_belongs_to_many
     reflection = reflection_options unless reflection
