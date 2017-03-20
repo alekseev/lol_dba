@@ -59,7 +59,7 @@ EOM
 
   def self.form_data_for_migration(missing_indexes)
     add = []
-    missing_indexes.each do |table_name, keys_to_add|
+    missing_indexes.to_h.each do |table_name, keys_to_add|
       keys_to_add.each do |key|
         next if key.blank?
         next if key_exists?(table_name,key)
@@ -171,13 +171,14 @@ EOM
 
   def self.puts_migration_content(migration_name, indexes, warning_messages)
     puts warning_messages
-    if indexes.keys.empty?
+    add = form_data_for_migration(indexes)
+    if indexes.keys.empty? || add.empty?
       puts "Yey, no missing indexes found!"
     else
       tip = "* TIP: if you have a problem with the index name('index name too long') you can solve with the :name option. "
       tip += "Something like :name => 'my_index'."
       puts tip
-      add = form_data_for_migration(indexes)
+      # add = form_data_for_migration(indexes)
       puts form_migration_content(migration_name, add)
     end
   end
